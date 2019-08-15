@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mesibo FAQ bot</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="bot.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>   
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="botfunc.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+</head>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />   
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+<div class="container">
+	<hr>
+	<img src="mesibo-bg-white.png">
+	<hr>
+	<button onclick="authenticate().then(loadClient)">Connect to google</button>
+	<div class="row">
+	    <div class="chatbox chatbox22 chatbox--tray">
+    <div class="chatbox__title">
+        <h5 ><a  style="color:white">Questions? Chat with Mesibot !</a></h5>
+        <!--<button class="chatbox__title__tray">
+            <span></span>
+        </button>-->
+        <button class="chatbox__title__close">
+            <span>
+                <svg viewBox="0 0 12 12" width="12px" height="12px">
+                    <line stroke="#FFFFFF" x1="11.75" y1="0.25" x2="0.25" y2="11.75"></line>
+                    <line stroke="#FFFFFF" x1="11.75" y1="11.75" x2="0.25" y2="0.25"></line>
+                </svg>
+            </span>
+        </button>
+    </div>
+    <div class="chatbox__body" id="msglist">
+        <div class="chatbox__body__message chatbox__body__message--left">
+		
+		<!-- <div class="chatbox_timing">
+		</div> -->
+            <img src="19592314.png" alt="Picture">
+			<!-- <div class="clearfix"></div> -->
+			<div class="ul_section_full">
+			<ul class="ul_msg">
+			<li><strong>Mesibot</strong></li>
+			<li>Hey! I'm Mesibot. I can talk about the real time Mesibo Chat API . What would you like to know? </li>
+			</ul>
+			<div class="clearfix"></div>
+			<ul class="ul_msg2">
+			<li><a href="#"><i class="fa fa-pencil"></i> </a></li>
+			</ul>
+			</div>
+			 
+        </div>
+        
+        
+        <!-- <div class="chatbox__body__message chatbox__body__message--right">
+		
+			<div class="ul_section_full">
+			<ul class="ul_msg">
+			<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </li>
+			</ul>
+			</div>
+			 
+        </div> -->
+    </div>
+    <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm chat_set_height" placeholder="Type a message..." tabindex="0" dir="ltr" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" contenteditable="true" />
+						
+                        <span class="input-group-btn">
+                            <button class="btn bt_bg btn-sm" id="btn-chat" onclick="sendMessage()">
+                                Send </button>
+                        </span>
+                    </div>
+                </div>
+</div>
+	    
+	</div>
+	</div>
+	<script type="text/javascript">
+
+		function sendMessage() {
+           var msgdata= document.getElementById("btn-input").value;
+        
+           if(msgdata){
+           	createSentBubble(msgdata);
+           	$('btn-input').val('');
+           	execute(msgdata); //DialogFlow msgdata = queryInputText
+
+			}
+     	}
+
+     	function updateScroll(){
+  		var objDiv = document.getElementById("msglist");
+  		objDiv.scrollTop = objDiv.scrollHeight;
+		}
+
+     	function createSentBubble(msg_data){
+     		var iDiv = document.createElement('div');
+     		iDiv.className = 'chatbox__body__message chatbox__body__message--right';
+     		iDiv.setAttribute('style','display: inline-block');
+     		var innerDiv = document.createElement('div');
+     		innerDiv.className = 'ul_section_full';
+     		var ulMsg = document.createElement('div');
+     		ulMsg.className = 'ul_msg';
+     		var liMsg = document.createElement('li');
+     		var msgContent=document.createTextNode(msg_data);
+
+
+  			liMsg.append(msgContent);
+  			ulMsg.append(liMsg);
+  			innerDiv.append(ulMsg);
+  			iDiv.appendChild(innerDiv);
+
+  			var mylist = document.getElementById("msglist");
+  			mylist.appendChild(iDiv);
+  			updateScroll();
+      
+			}
+
+		function createRecieveBubble(msg_data){
+     		var iDiv = document.createElement('div');
+     		iDiv.className = 'chatbox__body__message chatbox__body__message--left';
+     		var mlogo = document.createElement('img');
+     		mlogo.setAttribute("src","19592314.png");
+     		var innerDiv = document.createElement('div');
+     		innerDiv.className = 'ul_section_full';
+     		var ulMsg = document.createElement('div');
+     		ulMsg.className = 'ul_msg';
+     		var liBotName = document.createElement('li');
+     		var liMsg = document.createElement('li');
+     		var botName=document.createTextNode("Mesibot");
+     		var boldTxt = document.createElement('strong')
+     		var msgContent=document.createTextNode(msg_data);
+
+
+     		
+  			liMsg.append(msgContent);
+  			boldTxt.append(botName);
+  			liBotName.append(boldTxt);
+  			ulMsg.append(liBotName);
+  			ulMsg.append(liMsg);
+  			innerDiv.append(mlogo);
+  			innerDiv.append(ulMsg);
+  			iDiv.appendChild(innerDiv);
+
+  			var mylist = document.getElementById("msglist");
+  			mylist.appendChild(iDiv);
+  			updateScroll();
+      
+			}
+
+       function authenticate() {
+       	 console.log(gapi.auth2);
+         return gapi.auth2.getAuthInstance()
+        .signIn({scope: "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/dialogflow"})
+        .then(function() { console.log("Sign-in successful"); },
+              function(err) { console.error("Error signing in", err); });
+  }
+
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyAwDZSKDUJpzTOqmpX4FFx_4BrqP7IlOMs");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dialogflow/v2beta1/rest")
+        .then(function() { console.log("GAPI client loaded for API"); },
+              function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute(queryInputText) {
+
+    return gapi.client.dialogflow.projects.agent.sessions.detectIntent({
+      "session": "projects/mesibo-dialogflow/agent/sessions/663381371863&key=AIzaSyAwDZSKDUJpzTOqmpX4FFx_4BrqP7IlOMs ",
+      "$.xgafv": "2",
+      "resource": {
+        "queryInput": {
+          "text": {
+            "text": queryInputText,
+            "languageCode": "string"
+          }
+        }
+      }
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response.result);
+                dfResponse = response;
+
+                createRecieveBubble(response['result']['queryResult']['fulfillmentText']);
+                             
+              },
+              function(err) { console.error("Execute error", err); });
+  }
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "663381371863-2ldkqhu721p0pvsu7cn32up8unm5os2r.apps.googleusercontent.com"});
+  });
+
+     document.onkeydown = function (e) {
+  		e = e || window.event;
+  		switch (e.which || e.keyCode) {
+        	case 13 : //Your Code Here (13 is ascii code for 'ENTER')
+            	sendMessage();
+            	break;
+  	}
+
+
+
+}
+
+	</script>	
+  </html>
