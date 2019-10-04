@@ -287,6 +287,7 @@
 }
 #Smallchat .Input-blank .Input_field {
     max-height: 20px;
+    color : #808080;
 }
 #Smallchat .Input_field {
     width: 100%;

@@ -10,6 +10,7 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
  <script type="text/javascript" src="https://api.mesibo.com/mesibo.js"></script>
 
 
@@ -18,6 +19,7 @@
 
 <div class="container">
         <hr>
+        <button onclick="authenticate().then(loadClient)">Connect to google</button>
 
 	<div class="row">
 	 <div id="Smallchat">
@@ -128,13 +130,8 @@
 		console.log("TestNotify.prototype.Mesibo_OnMessage: from "  + m.peer);
     console.log(m);
 		if(data){
-		var response = new TextDecoder("utf-8").decode(data);
-		console.log(response);
-		response = JSON.parse(response);	
-		console.log(response['result']['fulfillment']['speech']);	
-		var responseText = response['result']['fulfillment']['speech'];
-			createRecieveBubble(responseText);
-
+		var string = new TextDecoder("utf-8").decode(data);
+		console.log(string);
 		}
 		
 	}
@@ -162,8 +159,8 @@
            if(msgdata){
             console.log(msgdata);
             createSentBubble(msgdata);
-	    document.getElementById("inputfield").value = "";
-	
+            $('inputfield').val('');
+            //execute(msgdata); //DialogFlow msgdata = queryInputText
 		var p = {};
 	       	p.peer = "Ankit";
 		var id = api.random();
@@ -177,8 +174,7 @@
      
 
       function createSentBubble(msg_data){
-	      console.log("Sent message ===> ", msg_data);      
-	var iDiv = document.createElement('div');
+        var iDiv = document.createElement('div');
         iDiv.className = 'outgoing_msg';
         var innerDiv = document.createElement('div');
         innerDiv.className = 'sent_msg';
@@ -224,6 +220,49 @@
   updateScroll();
       }
 
+       function authenticate() {
+         console.log(gapi.auth2);
+         return gapi.auth2.getAuthInstance()
+        .signIn({scope: "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/dialogflow"})
+        .then(function() { console.log("Sign-in successful"); },
+              function(err) { console.error("Error signing in", err); });
+  }
+
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyAwDZSKDUJpzTOqmpX4FFx_4BrqP7IlOMs");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dialogflow/v2beta1/rest")
+        .then(function() { console.log("GAPI client loaded for API"); },
+              function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute(queryInputText) {
+
+    return gapi.client.dialogflow.projects.agent.sessions.detectIntent({
+      "session": "projects/mesibo-dialogflow/agent/sessions/663381371863&key=AIzaSyAwDZSKDUJpzTOqmpX4FFx_4BrqP7IlOMs ",
+      "$.xgafv": "2",
+      "resource": {
+        "queryInput": {
+          "text": {
+            "text": queryInputText,
+            "languageCode": "string"
+          }
+        }
+      }
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response.result);
+                dfResponse = response;
+
+                createRecieveBubble(response['result']['queryResult']['fulfillmentText']);
+                             
+              },
+              function(err) { console.error("Execute error", err); });
+  }
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "663381371863-2ldkqhu721p0pvsu7cn32up8unm5os2r.apps.googleusercontent.com"});
+  });
+
      document.onkeydown = function (e) {
       e = e || window.event;
       switch (e.which || e.keyCode) {
@@ -242,6 +281,7 @@ $(document).ready(function(){
     });
     
        $(".chat_close_icon").click(function(){
+        console.log("YEs");
         $(".Layout").hide();
            $(".chat_on").show(300);
     });
