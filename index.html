@@ -51,7 +51,7 @@
                         <div class="received_withd_msg">
                           <div class="bot_logo_container">
                           <img src="circle-cropped.png" >
-                          <p>Hey! I'm Mesibot.I can talk about the real time Mesibo Chat API . What would you like to know?</p>
+                          <p>Hey! I'm Mesibot.I can talk(in multiple languages!) about the real time Mesibo Chat API . What would you like to know?</p>
                           </div>
                         </div>
                   </div>
@@ -131,8 +131,9 @@
 		var response = new TextDecoder("utf-8").decode(data);
 		console.log(response);
 		response = JSON.parse(response);	
-		console.log(response['result']['fulfillment']['speech']);	
-		var responseText = response['result']['fulfillment']['speech'];
+		//console.log(response['result']['fulfillment']['speech']);	
+		//var responseText = response['result']['fulfillment']['speech']; //For dialogflow
+			let responseText = response["translations"][0]["translation"]; // For IBM translate
 			createRecieveBubble(responseText);
 
 		}
