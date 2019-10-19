@@ -230,7 +230,8 @@
       switch (e.which || e.keyCode) {
           case 13 : //Your Code Here (13 is ascii code for 'ENTER')
               sendMessage();
-              break;
+              if (event.preventDefault) event.preventDefault();
+	      break;
        }
 
     }
