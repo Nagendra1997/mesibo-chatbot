@@ -42,16 +42,21 @@
  *
  */
 
-const MESIBO_ACCESS_TOKEN = "5f1e7ffb806d046aadf5587128d75fac0fa4daa86183a1ce5e4410cf72";
-const MESIBO_APP_ID = 'web';
+var MESIBO_ACCESS_TOKEN = "549c8081b98def7c84641261fc862f9719123dbac20958bebb1195c8";
+var MESIBO_APP_ID = "chatbot";
 
 /* A destination where this demo app will send message  */
-const MESIBO_USER_DESTINATION = 'js_user';
-const MESIBO_DISPLAY_NAME = "Mesibo"
+const MESIBO_USER_DESTINATION = '18885551001';
+const MESIBO_DISPLAY_NAME = "mesibo"
 const MESIBO_DISPLAY_PICTURE = "images/profile/default-profile-icon.jpg"
 
+
+//If you are hosting Mesibo backend on your own server, change this accordingly.
+//Refer https://github.com/mesibo/messenger-app-backend
+const MESIBO_API_URL = "https://app.mesibo.com/api.php"
 
 //Debug Mode Configuration
 isDebug = true // toggle this to turn on / off for global control
 if (isDebug) var MesiboLog = console.log.bind(window.console)
 else var MesiboLog = function() {}
+
