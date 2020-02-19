@@ -131,11 +131,7 @@
 		if(data){
 		var response = new TextDecoder("utf-8").decode(data);
 		console.log(response);
-		response = JSON.parse(response);	
-		//console.log(response['result']['fulfillment']['speech']);	
-		//var responseText = response['result']['fulfillment']['speech']; //For dialogflow
-			let responseText = response["translations"][0]["translation"]; // For IBM translate
-			createRecieveBubble(responseText);
+		createRecieveBubble(response);
 
 		}
 		
