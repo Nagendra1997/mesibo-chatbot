@@ -1,6 +1,6 @@
 # Javascript Messaging Popup
 
-Demo: nagendrawhy.com
+Demo: https://nagendrawhy.com
 
 This repo contains the sample web app for a popup chat interface for Mesibo Javascript API.
 You can find the full messenger app in messenger folder.
